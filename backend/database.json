@@ -1,0 +1,29 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Caderno",
+            "price": 11.59
+        },
+        {
+            "id": 2,
+            "name": "Lápis",
+            "price": 0.80
+        },
+        {
+            "id": 3,
+            "name": "Cola",
+            "price": 5.90
+        },
+        {
+            "id": 4,
+            "name": "Borracha",
+            "price": 0.50
+        },
+        {
+            "id": 5,
+            "name": "Régua",
+            "price": 2.00
+        }
+    ]
+}

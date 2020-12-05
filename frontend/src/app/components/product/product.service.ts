@@ -22,6 +22,11 @@ export class ProductService {
   }  
 
 
+  read(): Observable<Product[]>{
+    return this.http.get<Product[]>(this.baseUrl);
+  }
+  
+
   showMessage(msg: string): void {
     this.snackBar.open(msg, "X", {
       duration: 3000,

@@ -38,6 +38,13 @@ export class ProductService {
     return this.http.put<Product>(urlToUpdateProduct, product);
   }
 
+
+  delete(id: string): Observable<Product> {
+    let urlToDeleteProduct = `${this.baseUrl}/${id}`;
+    return this.http.delete<Product>(urlToDeleteProduct);
+  }
+
+  
   showMessage(msg: string): void {
     this.snackBar.open(msg, "X", {
       duration: 3000,

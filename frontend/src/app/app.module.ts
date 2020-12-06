@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http'
 
 import { AppRoutingModule } from './app-routing.module';
@@ -23,7 +23,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
 import { ProductReadComponent } from './components/product/product-read/product-read.component';
+
+import localPt from '@angular/common/locales/pt';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localPt);
 
 @NgModule({
   declarations: [
@@ -39,7 +45,7 @@ import { ProductReadComponent } from './components/product/product-read/product-
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule, 
+    BrowserAnimationsModule,
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
@@ -49,9 +55,15 @@ import { ProductReadComponent } from './components/product/product-read/product-
     HttpClientModule,
     FormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatTableModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: LOCALE_ID,
+      useValue: 'pt-BR'
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

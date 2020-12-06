@@ -26,6 +26,17 @@ export class ProductService {
     return this.http.get<Product[]>(this.baseUrl);
   }
   
+ 
+  readById(id: string): Observable<Product> {
+    let urlToGetProduct = `${this.baseUrl}/${id}`;
+    return this.http.get<Product>(urlToGetProduct);
+  }
+
+
+  update(product: Product): Observable<Product> {
+    let urlToUpdateProduct = `${this.baseUrl}/${product.id}`;
+    return this.http.put<Product>(urlToUpdateProduct, product);
+  }
 
   showMessage(msg: string): void {
     this.snackBar.open(msg, "X", {

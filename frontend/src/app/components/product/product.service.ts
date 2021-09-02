@@ -2,62 +2,86 @@ import { Product } from './product.model';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EMPTY, Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-
-  private baseUrl = "http://localhost:5000/products";
-
+  private products: Array<Product> = [];
   
-  constructor(private snackBar: MatSnackBar,
-    private http: HttpClient) { }
-
+  constructor(private snackBar: MatSnackBar) {}
   
   create(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.baseUrl, product).pipe(
-        map((obj) => obj),
-        catchError(e => this.errorHandler(e))
-    );
+    let id = this.products.length;
+    product.id = id;
+    this.products.push(product);
+    const observable = new Observable<Product>(subscriber => {
+        subscriber.next(product);
+        subscriber.complete();
+    });
+    return observable;
   }  
 
 
-  read(): Observable<Product[]>{
-    return this.http.get<Product[]>(this.baseUrl).pipe(
-      map((obj) => obj),
-      catchError(e => this.errorHandler(e))
-    );
+  read(): Observable<Product[]>{    
+    const observable = new Observable<Product[]>(subscriber => {
+        subscriber.next(this.products);
+        subscriber.complete();
+    });
+    return observable;
   }
   
  
   readById(id: number): Observable<Product> {
-    let urlToGetProduct = `${this.baseUrl}/${id}`;
-    return this.http.get<Product>(urlToGetProduct).pipe(
-      map((obj) => obj),
-      catchError(e => this.errorHandler(e))
-    );
+    let productFound = this.products.filter(
+        (_product: Product) => {
+            return _product.id == id;
+        },
+    )[0];
+    const observable = new Observable<Product>(subscriber => {
+        subscriber.next(productFound);
+        subscriber.complete();
+    });
+    return observable;
   }
-
 
   update(product: Product): Observable<Product> {
-    let urlToUpdateProduct = `${this.baseUrl}/${product.id}`;
-    return this.http.put<Product>(urlToUpdateProduct, product).pipe(
-      map((obj) => obj),
-      catchError(e => this.errorHandler(e))
-    );
+    let productFound = this.products.filter(
+        (_product: Product) => {
+            return product.id == _product.id;
+        },
+    )[0];
+
+    let index = this.products.indexOf(productFound);
+
+    if (index != -1) {
+        this.products[index] = product;
+        const observable = new Observable<Product>(subscriber => {
+            subscriber.next(product);
+            subscriber.complete();
+        });
+        return observable;
+    }
   }
 
-
   delete(id: number): Observable<Product> {
-    let urlToDeleteProduct = `${this.baseUrl}/${id}`;
-    return this.http.delete<Product>(urlToDeleteProduct).pipe(
-      map((obj) => obj),
-      catchError(e => this.errorHandler(e))
-    );
+    let productFound = this.products.filter(
+        (_product: Product) => {
+            return _product.id == id;
+        },
+    )[0];
+
+    let index = this.products.indexOf(productFound);
+
+    if (index > -1) {
+        this.products.splice(index, 1);
+    }
+    const observable = new Observable<Product>(subscriber => {
+        subscriber.next(productFound);
+        subscriber.complete();
+    });
+    return observable;
   }
 
 
